@@ -1,0 +1,6 @@
+C:\Users\qwe95\Anaconda3
+C:\Users\qwe95\Anaconda3\Library\mingw-w64\bin
+C:\Users\qwe95\Anaconda3\Library\usr\bin
+C:\Users\qwe95\Anaconda3\Library\bin
+C:\Users\qwe95\Anaconda3\Scripts
+D:\Program\emacs\bin
