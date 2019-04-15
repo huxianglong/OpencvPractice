@@ -1,6 +1,9 @@
 #ifndef _renderFace_H_
 #define _renderFace_H_
 
+#include <opencv2/face.hpp>
+#include <opencv2/imgproc.hpp>
+
 using namespace cv;
 using namespace std;
 
@@ -55,5 +58,6 @@ void renderFace(cv::Mat &im, vector<Point2f> &landmarks)
     }
 
 }
+
 
 #endif // _renderFace_H_

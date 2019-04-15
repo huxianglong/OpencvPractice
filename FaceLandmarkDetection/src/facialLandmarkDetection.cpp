@@ -26,6 +26,7 @@ int main(int argc,char** argv)
     // Variable to store a video frame and its grayscale
     Mat frame, gray;
 
+//    list<vector<vector<Point2f>>> landmarks;
     // Read a frame
     while(cap.read(frame))
     {
@@ -43,24 +44,25 @@ int main(int argc,char** argv)
         // Landmarks for one face is a vector of points
         // There can be more than one face in the image. Hence, we
         // use a vector of vector of points.
-        vector< vector<Point2f> > landmarks;
+        vector< vector<Point2f> > local_landmark;
 
-        // Run landmark detector
-        bool success = facemark->fit(frame,faces,landmarks);
+        // Run local_landmark detector
+        bool success = facemark->fit(frame,faces,local_landmark);
 
         if(success)
         {
             // If successful, render the landmarks on the face
-            for(int i = 0; i < landmarks.size(); i++)
+            for(int i = 0; i < local_landmark.size(); i++)
             {
-                drawLandmarks(frame, landmarks[i]);
+//                drawLandmarks(frame, local_landmark[i]);
+                cout << local_landmark[i].size() << endl;
             }
         }
 
         // Display results
-        imshow("Facial Landmark Detection", frame);
+//        imshow("Facial Landmark Detection", frame);
         // Exit loop if ESC is pressed
-        if (waitKey(1) == 27) break;
+//        if (waitKey(1) == 27) break;
 
     }
     return 0;
