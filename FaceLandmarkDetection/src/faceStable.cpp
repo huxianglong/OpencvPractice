@@ -60,9 +60,6 @@ int main(int argc, char **argv) {
 
     while (cap.read(frame)) {
         counter += 1;
-        if (counter == 95) {
-            cout << "stop" << endl;
-        }
         cout << "-----------------------" << endl;
         cout << "Now dealing frame " << counter << endl;
         cout << "Landmark: " << landmarks.size() << endl;
@@ -77,32 +74,22 @@ int main(int argc, char **argv) {
             landmarks.push_back(localLandMark[0]);
             // we assume there is only one face
             if (frames.size() == 2 * nNeighbor + 1) {
+                int start = 0;
                 // average the frame in the middle
                 if (isAveraged) {
-                    std::vector<cv::Point2f> aveLandmark;
-                    smooth(grayFrames, landmarks, -nNeighbor, nNeighbor, nNeighbor, aveLandmark);
-                    cv::Mat targetFrame = frames[nNeighbor];
+                        start = nNeighbor;
+                }
+                std::vector<cv::Point2f> aveLandmark;
+                for (int i = 0; i <= nNeighbor; ++i) {
+                    smooth(grayFrames, landmarks, -nNeighbor, nNeighbor, i, aveLandmark);
+                    cv::Mat targetFrame = frames[i];
                     drawCircle(targetFrame, aveLandmark);
-                    writeCounter += 1;
-                    cout << "Now writing frame " << writeCounter << endl;
                     outVideo.write(targetFrame);
+                    writeCounter += 1;
+                    cout << "Now writing frame " << writeCounter<< endl;
                     cv::imshow("Facial Landmark Detection", targetFrame);
                     if (cv::waitKey(1) == 27)
                         break;
-                    // average the first few frames
-                } else {
-                    std::vector<cv::Point2f> aveLandmark;
-                    for (int i = 0; i <= nNeighbor; ++i) {
-                        smooth(grayFrames, landmarks, -nNeighbor, nNeighbor, i, aveLandmark);
-                        cv::Mat targetFrame = frames[i];
-                        drawCircle(targetFrame, aveLandmark);
-                        outVideo.write(targetFrame);
-                        writeCounter += 1;
-                        cout << "Now writing frame " << writeCounter<< endl;
-                        cv::imshow("Facial Landmark Detection", targetFrame);
-                        if (cv::waitKey(1) == 27)
-                            break;
-                    }
                     isAveraged = true;
                 }
                 // remove the first few outdated frames
@@ -139,6 +126,24 @@ int main(int argc, char **argv) {
             grayFrames.clear();
             landmarks.clear();
         }
+
+        int start;
+        if (isAveraged) {
+            start = nNeighbor + 1;
+        }
+        std::vector<cv::Point2f> aveLandmark;
+        for (int i = start; i <= landmarks.size() - 1; ++i) {
+            smooth(grayFrames, landmarks, -nNeighbor, nNeighbor, i, aveLandmark);
+            cv::Mat targetFrame = frames[i];
+            drawCircle(targetFrame, aveLandmark);
+            outVideo.write(targetFrame);
+            writeCounter += 1;
+            cout << "Now writing frame " << writeCounter << endl;
+            cv::imshow("Facial Landmark Detection", targetFrame);
+            if (cv::waitKey(1) == 27)
+                break;
+        }
+
     }
 
     cap.release();

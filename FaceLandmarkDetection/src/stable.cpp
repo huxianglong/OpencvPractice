@@ -164,7 +164,7 @@ int main(int argc, char** argv)
     double fps = cap.get(CAP_PROP_FPS);
     // Set up output video
 //    cv::VideoWriter out("video_out.avi", VideoWriter::fourcc('M','J','P','G'), fps, Size(w, h));
-    cv::VideoWriter out("video_out_stable.avi", VideoWriter::fourcc('M','J','P','G'), fps, Size(w, h));
+    cv::VideoWriter out("video_out.avi", VideoWriter::fourcc('M','J','P','G'), fps, Size(w, h));
 
 
     cv::namedWindow("Facial Landmark Detection", cv::WINDOW_NORMAL);
